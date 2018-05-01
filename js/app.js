@@ -42,9 +42,9 @@ Player.prototype.update = function() {
 
 
 // Now instantiate your objects.
-var enemy1 = new Enemy(0, 83);
-var enemy2 = new Enemy(0, 166);
-var enemy3 = new Enemy(0, 249);
+var enemy1 = new Enemy(0, 62);
+var enemy2 = new Enemy(0, 145);
+var enemy3 = new Enemy(0, 228);
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [enemy1, enemy2, enemy3];
