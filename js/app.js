@@ -29,7 +29,7 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-
+    this.sprite = 'images/char-boy.png';
 };
 
 Player.prototype.update = function() {
@@ -47,12 +47,11 @@ var enemy2 = new Enemy(0, 166);
 var enemy3 = new Enemy(0, 249);
 
 // Place all enemy objects in an array called allEnemies
-allEnemies = [enemy1, enemy2, enemy3]
-
+var allEnemies = [enemy1, enemy2, enemy3];
 
 
 // Place the player object in a variable called player
-
+var player = new Player();
 
 
 // This listens for key presses and sends the keys to your
