@@ -50,7 +50,7 @@ var Player = function(x, y) {
     this.y = y
 };
 
-Player.prototype.update = function() {
+Player.prototype.update = function(dx, dy) {
 
 };
 
@@ -58,8 +58,17 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function() {
+Player.prototype.handleInput = function(pressedKey) {
+    switch (pressedKey) {
+        case 'up':
 
+        case 'down':
+
+        case 'left':
+
+        case 'down':
+
+    }
 };
 
 
