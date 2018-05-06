@@ -23,7 +23,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     
     //*
-    if (this.x < 505) {
+    if (this.x <= 505) {
         this.x = this.x + (101 * dt) * this.speed;
     } else {
         this.x = 0;
@@ -47,11 +47,19 @@ var Player = function(x, y) {
 
     // Set player's position
     this.x = x;
-    this.y = y
+    this.y = y;
+
+    // Set horizontal and vertical movement change for each move
+    this.dx = 0;
+    this.dy = 0;
 };
 
-Player.prototype.update = function(dx, dy) {
-
+Player.prototype.update = function() {
+    this.x = this.x + this.dx;
+    this.y = this.y + this.dy;
+    
+    this.dx = 0;
+    this.dy = 0;
 };
 
 Player.prototype.render = function() {
@@ -59,18 +67,143 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(pressedKey) {
-    switch (pressedKey) {
-        case 'up':
+    // When player's position is in the middle, i.e. not on the edge
+    if (this.x > 0 && this.x < 404 && this.y > 0 && this.y < 415) {
+        console.log("move in the middle");      
+        switch (pressedKey) {
+            case 'right':
+                this.dx = 101;
+                this.dy = 0;
+                break;
+            case 'left':
+                this.dx = -101;
+                this.dy = 0;
+                break;
+            case 'up':
+                this.dx = 0;
+                this.dy = -83;
+                break;
+            case 'down':
+                this.dx = 0;
+                this.dy = 83;
+                break;
+        } 
+    }
 
-        case 'down':
-
-        case 'left':
-
-        case 'down':
-
+    // When player's position is on the edge: bottom, left, right
+    if (this.x == 0 || this.x == 404 || this.y == 415) {
+        if (this.y == 415) { // When player is on the bottom grass blocks 
+            if (this.x > 0 && this.x < 404) { // When player's position is among the middle three grass blocks
+                switch (pressedKey) {
+                    case 'right':
+                        this.dx = 101;
+                        this.dy = 0;
+                        break;
+                    case 'left':
+                        this.dx = -101;
+                        this.dy = 0;
+                        console.log("move to the left");
+                        break;
+                    case 'up':
+                        this.dx = 0;
+                        this.dy = -83;
+                        break;
+                    case 'down':
+                        this.dx = 0;
+                        this.dy = 0;
+                        break;
+                }        
+            } else { 
+                if (this.x == 0) { // When player's position is at bottom left corner
+                    switch (pressedKey) {
+                        case 'right':
+                            this.dx = 101;
+                            this.dy = 0;
+                            break;
+                        case 'left':
+                            this.dx = 0;
+                            this.dy = 0;
+                            break;
+                        case 'up':
+                            this.dx = 0;
+                            this.dy = -83;
+                            break;
+                        case 'down':
+                            this.dx = 0;
+                            this.dy = 0;
+                            break;
+                    }
+                } else { // When player's position is at bottom right corner
+                    switch (pressedKey) {
+                        case 'right':
+                            this.dx = 0;
+                            this.dy = 0;
+                            break;
+                        case 'left':
+                            this.dx = -101;
+                            this.dy = 0;
+                            break;
+                        case 'up':
+                            this.dx = 0;
+                            this.dy = -83;
+                            break;
+                        case 'down':
+                            this.dx = 0;
+                            this.dy = 0;
+                            break;
+                    }
+                }
+            }
+        } else { // When player is above first grass blocks, and is on left edge or right edge 
+            if (this.x == 0) { // When player is on the left edge
+                switch (pressedKey) {
+                    case 'right':
+                        this.dx = 101;
+                        this.dy = 0;
+                        break;
+                    case 'left':
+                        this.dx = 0;
+                        this.dy = 0;
+                        break;
+                    case 'up':
+                        this.dx = 0;
+                        this.dy = -83;
+                        break;
+                    case 'down':
+                        this.dx = 0;
+                        this.dy = 83;
+                        break;
+                }
+            } else { // When player is on the right edge
+                switch (pressedKey) {
+                    case 'right':
+                        this.dx = 0;
+                        this.dy = 0;
+                        break;
+                    case 'left':
+                        this.dx = -101;
+                        this.dy = 0;
+                        break;
+                    case 'up':
+                        this.dx = 0;
+                        this.dy = -83;
+                        break;
+                    case 'down':
+                        this.dx = 0;
+                        this.dy = 83;
+                        break;
+                }
+            }
+        }
+    }
+ 
+    if (this.y == 0) { // When player reaches the river blocks
+        this.x = playerInitPosX;
+        this.y = playerInitPosY;
+        this.dx = 0;
+        this.dy = 0;
     }
 };
-
 
 // Now instantiate your objects.
 var enemy1 = new Enemy(0, 62, 1);
@@ -80,15 +213,17 @@ var enemy3 = new Enemy(0, 228, 2);
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [enemy1, enemy2, enemy3];
 
-
 // Place the player object in a variable called player
-// (202, 394) is the initial position of the player
-var player = new Player(202, 394);
+// (202, 415) is the initial position of the player
+var playerInitPosX = 202;
+var playerInitPosY = 415;
+var player = new Player(playerInitPosX, playerInitPosY);
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
+    console.log(e.keyCode);
     var allowedKeys = {
         37: 'left',
         38: 'up',
