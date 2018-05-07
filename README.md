@@ -1,4 +1,4 @@
-＃ Frogger
+# Frogger
 This Udacity front-end project is an implementation of classic arcade game Frogger.  It's built in JavaScript, utilizes object-oriented programming in JavaScript. Contructor functions and prototype functions are the majority part of the code, and keyword `this` is used appropriately to refer the object upon which functions are called.
 
 Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
