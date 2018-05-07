@@ -3,3 +3,7 @@ This Udacity front-end project is an implementation of classic arcade game Frogg
 
 ## Version
 Version 1.0 - released on May 6th, 2018
+
+## Run The Game
+1. Download this repo, then open `index.html` in your browser. Or,
+2. Play it at github.io [Frogger](https://eqlz.github.io/frogger/).
