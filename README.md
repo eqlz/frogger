@@ -12,3 +12,8 @@ Features to add
 ## Run The Game
 1. Download this repo, then open `index.html` in your browser. Or,
 2. Play it at github.io [Frogger](https://eqlz.github.io/frogger/).
+
+## How To Play The Game
+Player can move up, down, left, right via these keys on the keyboard.  To win the game, player need to avoid enemies, and successfully reach the river.
+
+Player will be restart at the initial position when it collides with enemeies or reach the river.
