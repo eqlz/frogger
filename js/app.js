@@ -30,6 +30,10 @@ Enemy.prototype.update = function(dt) {
     }
     /**/
 
+    this.checkCollisions();
+};
+
+Enemy.prototype.checkCollisions = function() {
     // Check whether player has collision with one of the enemies
     if (((this.x + 101 >= player.x + 20 && // When enemy's head has touched the left edge of player
                                            // 20 is the distance between character edge and character block edge
@@ -37,7 +41,8 @@ Enemy.prototype.update = function(dt) {
         (this.x >= player.x + 20 && // When enemy's tail has touched the left edge of player
         this.x <= player.x + 101 - 20)) && // When enemy's tail has not reached the right edge of player
         this.y + 21 == player.y) {
-        // Reset player to initial position
+        
+        // When collide, reset player to initial position
         player.x = 202;
         player.y = 415;
         player.dx = 0;
