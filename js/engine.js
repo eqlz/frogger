@@ -18,14 +18,22 @@ var Engine = (function(global) {
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
      */
+    // Predefine the variables
     var doc = global.document,
         win = global.window,
+
+        // create the canvas element
         canvas = doc.createElement('canvas'),
+
+        // grab the 2D context for that canvas
         ctx = canvas.getContext('2d'),
         lastTime;
 
+    // set the canvas elements height/width
     canvas.width = 505;
     canvas.height = 606;
+
+    // add it to the DOM
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -38,7 +46,13 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
+
+        // returns the number of milliseconds elapsed 
+        // since January 1, 1970 00:00:00 UTC.
         var now = Date.now(),
+
+            // (milliseconds - milliseconds) / 1000.0
+            // dt has a unit of second
             dt = (now - lastTime) / 1000.0;
 
         /* Call our update/render functions, pass along the time delta to
@@ -54,6 +68,12 @@ var Engine = (function(global) {
 
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
+         */
+
+        /* perform an animation,
+         * and requests that the browser call a specified function to update an animation 
+         * before the next repaint.
+         * You should call this method whenever you're ready to update your animation onscreen.
          */
         win.requestAnimationFrame(main);
     }
@@ -94,6 +114,8 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        //console.log("player current x " + player.x);
+        //console.log("player current y " + player.y);
     }
 
     /* This function initially draws the "game level", it will then call

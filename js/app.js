@@ -22,13 +22,11 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     
-    //*
     if (this.x <= 505) {
         this.x = this.x + (101 * dt) * this.speed;
     } else {
         this.x = 0;
     }
-    /**/
 
     this.checkCollisions();
 };
@@ -43,10 +41,6 @@ Enemy.prototype.checkCollisions = function() {
         this.y + 21 == player.y) {
         
         // When collide, reset player to initial position
-        /*player.x = 202;
-        player.y = 415;
-        player.dx = 0;
-        player.dy = 0;*/
         player.resetPlayer();
     }
 };
@@ -216,10 +210,6 @@ Player.prototype.handleInput = function(pressedKey) {
     }
  
     if (this.y == 0) { // When player reaches the river blocks
-        /*this.x = 202;
-        this.y = 415;
-        this.dx = 0;
-        this.dy = 0;*/
         this.resetPlayer();
     }
 };
@@ -238,7 +228,6 @@ var enemy3 = new Enemy(81, 228, 1);
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [enemy1, enemy2, enemy3];
-//var allEnemies = [enemy3];
 
 // Place the player object in a variable called player
 // (202, 415) is the initial position of the player
