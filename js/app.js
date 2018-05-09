@@ -43,10 +43,11 @@ Enemy.prototype.checkCollisions = function() {
         this.y + 21 == player.y) {
         
         // When collide, reset player to initial position
-        player.x = 202;
+        /*player.x = 202;
         player.y = 415;
         player.dx = 0;
-        player.dy = 0;
+        player.dy = 0;*/
+        player.resetPlayer();
     }
 };
 
@@ -215,11 +216,19 @@ Player.prototype.handleInput = function(pressedKey) {
     }
  
     if (this.y == 0) { // When player reaches the river blocks
-        this.x = 202;
+        /*this.x = 202;
         this.y = 415;
         this.dx = 0;
-        this.dy = 0;
+        this.dy = 0;*/
+        this.resetPlayer();
     }
+};
+
+Player.prototype.resetPlayer = function() {
+    this.x = 202;
+    this.y = 415;
+    this.dx = 0;
+    this.dy = 0;
 };
 
 // Now instantiate your objects.
