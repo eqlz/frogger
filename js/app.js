@@ -42,6 +42,9 @@ Enemy.prototype.checkCollisions = function() {
         
         // When collide, reset player to initial position
         player.resetPlayer();
+
+        // When collide, reduce one life, i.e. remove one heart at the bottom row
+        allLives.pop();
     }
 };
 
@@ -220,6 +223,49 @@ Player.prototype.resetPlayer = function() {
     this.dx = 0;
     this.dy = 0;
 };
+
+var Life = function(x, y) {
+    // Set up image for life
+    this.sprite = 'images/Heart.png';
+
+    // Set up position for life
+    this.x = x;
+    this.y = y;
+};
+
+Life.prototype.update = function() {
+
+};
+
+Life.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+var Gem = function(imageUrl, x, y) {
+    this.sprite = imageUrl;
+
+    this.x = x;
+    this.y = y;
+};
+
+Gem.prototype.update = function() {
+    var positionsX = [0, 101, 202, 303, 404];
+    var psoitionsY = [83, 166, 249];
+};
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+var gem1 = new Gem('images/Gem Orange.png', 101, 83);
+var allGems = [gem1];
+
+var life1 = new Life(0, 508);
+var life2 = new Life(101, 508);
+var life3 = new Life(202, 508);
+var life4 = new Life(303, 508);
+var life5 = new Life(404, 508);
+var allLives = [life1, life2, life3, life4, life5];
 
 // Now instantiate your objects.
 var enemy1 = new Enemy(0, 62, 1);
