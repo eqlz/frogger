@@ -45,6 +45,8 @@ Enemy.prototype.checkCollisions = function() {
 
         // When collide, reduce one life, i.e. remove one heart at the bottom row
         allLives.pop();
+
+        resetGems();
     }
 };
 
@@ -222,8 +224,27 @@ Player.prototype.resetPlayer = function() {
     this.y = 415;
     this.dx = 0;
     this.dy = 0;
+
+    resetGems();
 };
 
+// This listens for key presses and sends the keys to your
+// Player.handleInput() method. You don't need to modify this.
+document.addEventListener('keyup', function(e) {
+    console.log(e.keyCode);
+    var allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down'
+    };
+
+    player.handleInput(allowedKeys[e.keyCode]);
+});
+
+/*
+ * Life that player is given, and how player will gain and lose life. 
+ */
 var Life = function(x, y) {
     // Set up image for life
     this.sprite = 'images/Heart.png';
@@ -241,6 +262,9 @@ Life.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+/*
+ * Gems that are laid out on stone blocks for player to pick up.
+ */
 var Gem = function(imageUrl, x, y) {
     this.sprite = imageUrl;
 
@@ -248,24 +272,49 @@ var Gem = function(imageUrl, x, y) {
     this.y = y;
 };
 
-Gem.prototype.update = function() {
-    var positionsX = [0, 101, 202, 303, 404];
-    var psoitionsY = [83, 166, 249];
-};
+// Update a gem's position
+Gem.prototype.update = function(newX, newY) {
+    this.x = newX;
+    this.y = newY;
+}
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var gem1 = new Gem('images/Gem Orange.png', 101, 83);
-var allGems = [gem1];
+// Reset three gem's positions
+function resetGems() {
+    // Possible horizontal positions for a gem
+    var positionX = [0, 101, 202, 303, 404];
+    // Possible vertical position for a gem
+    var positionY = [83, 166, 249];
+    
+    var pickedPositionX = [];
+    var pickedPositionY = [];
 
-var life1 = new Life(0, 508);
-var life2 = new Life(101, 508);
-var life3 = new Life(202, 508);
-var life4 = new Life(303, 508);
-var life5 = new Life(404, 508);
-var allLives = [life1, life2, life3, life4, life5];
+    var updatedGems = 0;
+    while(updatedGems < 3) {
+        // Randomly pick an x from positionX array
+        var newX = positionX[Math.floor(Math.random() * positionX.length)];
+        // Randomly pick an y from positionY array
+        var newY = positionY[Math.floor(Math.random() * positionY.length)];
+        
+        if ((!pickedPositionX.includes(newX)) && (!pickedPositionY.includes(newY))) {
+            allGems[updatedGems].update(newX, newY);
+
+            pickedPositionX.push(newX);
+            pickedPositionY.push(newY);
+
+            updatedGems ++;
+        }
+    }
+}
+
+//var gem1 = new Gem('images/Gem Blue.png', 101, 83);
+var gem2 = new Gem('images/Gem Green.png', 202, 83);
+var gem3 = new Gem('images/Gem Orange.png', 303, 83);
+var gem4 = new Gem('images/Heart.png', 404, 83)
+var allGems = [/*gem1,*/ gem2, gem3, gem4];
 
 // Now instantiate your objects.
 var enemy1 = new Enemy(0, 62, 1);
@@ -282,16 +331,16 @@ var playerInitPosY = 415;
 var player = new Player(playerInitPosX, playerInitPosY);
 
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    console.log(e.keyCode);
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
 
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+// Instantiate the five lives are given to player at the beginning
+// of the game
+var life1 = new Life(0, 508);
+var life2 = new Life(101, 508);
+var life3 = new Life(202, 508);
+var life4 = new Life(303, 508);
+var life5 = new Life(404, 508);
+
+// Place all lives in an array called allLives
+var allLives = [life1, life2, life3, life4, life5];
+
+

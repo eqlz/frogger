@@ -114,8 +114,6 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
-        //console.log("player current x " + player.x);
-        //console.log("player current y " + player.y);
     }
 
     /* This function initially draws the "game level", it will then call
