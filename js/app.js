@@ -47,6 +47,8 @@ Enemy.prototype.checkCollisions = function() {
         allLives.pop();
 
         resetGems();
+
+        showGameOverModal();
     }
 };
 
@@ -235,7 +237,6 @@ Player.prototype.resetPlayer = function() {
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    console.log(e.keyCode);
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -266,6 +267,23 @@ Life.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+var modal = document.getElementsByClassName('modal')[0];
+var closeButton = document.getElementsByClassName("close")[0];
+var finalScore = document.getElementById('modal-final-score');
+
+function showGameOverModal() {
+    if (allLives.length == 0) {
+        finalScore.innerHTML = scoreElement.innerHTML;
+        modal.style.display = "block";
+        allLives.push(life1, life2, life3, life4, life5);
+    }
+}
+
+closeButton.addEventListener("click", function() {
+    modal.style.display = "none";
+    scoreElement.innerHTML = '0000';
+});
+
 /*
  * Gems that are laid out on stone blocks for player to pick up.
  */
@@ -287,7 +305,6 @@ Gem.prototype.reset = function(newX, newY) {
 var scoreElement = document.getElementById('score');
 
 Gem.prototype.update = function() {
-    console.log("run gem update");
     if (this.x == player.x && this.y == player.y) {
         if (this.name == 'heart') {
             allLives.push(new Live(101 * allLives.length, 508));
@@ -338,12 +355,6 @@ function resetGems() {
     }
 }
 
-//var gem1 = new Gem('images/Gem Blue.png', 101, 83);
-var gem2 = new Gem('images/Gem Green.png', 'green', 0, 249);
-var gem3 = new Gem('images/Gem Orange.png', 'orange', 101, 83);
-//var gem4 = new Gem('images/Heart.png', 'heart', 404, 83);
-var allGems = [/*gem1,*/ gem2, gem3, /*gem4*/];
-
 // Now instantiate your objects.
 var enemy1 = new Enemy(0, 62, 1);
 var enemy2 = new Enemy(0, 145, 1.5);
@@ -358,8 +369,6 @@ var playerInitPosX = 202;
 var playerInitPosY = 415;
 var player = new Player(playerInitPosX, playerInitPosY);
 
-
-
 // Instantiate the five lives are given to player at the beginning
 // of the game
 var life1 = new Life(0, 508);
@@ -371,4 +380,8 @@ var life5 = new Life(404, 508);
 // Place all lives in an array called allLives
 var allLives = [life1, life2, life3, life4, life5];
 
-
+//var gem1 = new Gem('images/Gem Blue.png', 101, 83);
+var gem2 = new Gem('images/Gem Green.png', 'green', 0, 249);
+var gem3 = new Gem('images/Gem Orange.png', 'orange', 101, 83);
+//var gem4 = new Gem('images/Heart.png', 'heart', 404, 83);
+var allGems = [/*gem1,*/ gem2, gem3, /*gem4*/];
