@@ -77,6 +77,10 @@ Player.prototype.update = function() {
     
     this.dx = 0;
     this.dy = 0;
+
+    allGems.forEach(function(gem) {
+        gem.update();
+    });
 };
 
 Player.prototype.render = function() {
@@ -265,25 +269,49 @@ Life.prototype.render = function() {
 /*
  * Gems that are laid out on stone blocks for player to pick up.
  */
-var Gem = function(imageUrl, x, y) {
+var Gem = function(imageUrl, name, x, y) {
     this.sprite = imageUrl;
+
+    this.name = name;
 
     this.x = x;
     this.y = y;
 };
 
-// Update a gem's position
-Gem.prototype.update = function(newX, newY) {
+// Reset a gem's position
+Gem.prototype.reset = function(newX, newY) {
     this.x = newX;
     this.y = newY;
-}
+};
+
+var scoreElement = document.getElementById('score');
+
+Gem.prototype.update = function() {
+    console.log("run gem update");
+    if (this.x == player.x && this.y == player.y) {
+        if (this.name == 'heart') {
+            allLives.push(new Live(101 * allLives.length, 508));
+        } else {
+            scoreElement.innerHTML = parseInt(scoreElement.innerHTML) + 50;
+            var index = allGems.indexOf(this);
+            allGems.splice(index, 1);   
+        }
+    }
+};
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Reset three gem's positions
+// Reset three gems' positions
+// Why not put this into a prototype function?
+// Each gem's position is unique, so that there needs to be codes
+// to record which position has been taken by a gem.
+// Prototype functions only works on each gem, can't overview the bigger picture.
 function resetGems() {
+    allGems = [];
+    allGems.push(gem2, gem3);
+
     // Possible horizontal positions for a gem
     var positionX = [0, 101, 202, 303, 404];
     // Possible vertical position for a gem
@@ -293,14 +321,14 @@ function resetGems() {
     var pickedPositionY = [];
 
     var updatedGems = 0;
-    while(updatedGems < 3) {
+    while(updatedGems < 2) {
         // Randomly pick an x from positionX array
         var newX = positionX[Math.floor(Math.random() * positionX.length)];
         // Randomly pick an y from positionY array
         var newY = positionY[Math.floor(Math.random() * positionY.length)];
         
         if ((!pickedPositionX.includes(newX)) && (!pickedPositionY.includes(newY))) {
-            allGems[updatedGems].update(newX, newY);
+            allGems[updatedGems].reset(newX, newY);
 
             pickedPositionX.push(newX);
             pickedPositionY.push(newY);
@@ -311,10 +339,10 @@ function resetGems() {
 }
 
 //var gem1 = new Gem('images/Gem Blue.png', 101, 83);
-var gem2 = new Gem('images/Gem Green.png', 202, 83);
-var gem3 = new Gem('images/Gem Orange.png', 303, 83);
-var gem4 = new Gem('images/Heart.png', 404, 83)
-var allGems = [/*gem1,*/ gem2, gem3, gem4];
+var gem2 = new Gem('images/Gem Green.png', 'green', 0, 249);
+var gem3 = new Gem('images/Gem Orange.png', 'orange', 101, 83);
+//var gem4 = new Gem('images/Heart.png', 'heart', 404, 83);
+var allGems = [/*gem1,*/ gem2, gem3, /*gem4*/];
 
 // Now instantiate your objects.
 var enemy1 = new Enemy(0, 62, 1);
