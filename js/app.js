@@ -259,30 +259,9 @@ var Life = function(x, y) {
     this.y = y;
 };
 
-Life.prototype.update = function() {
-
-};
-
 Life.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-var modal = document.getElementsByClassName('modal')[0];
-var closeButton = document.getElementsByClassName("close")[0];
-var finalScore = document.getElementById('modal-final-score');
-
-function showGameOverModal() {
-    if (allLives.length == 0) {
-        finalScore.innerHTML = scoreElement.innerHTML;
-        modal.style.display = "block";
-        allLives.push(life1, life2, life3, life4, life5);
-    }
-}
-
-closeButton.addEventListener("click", function() {
-    modal.style.display = "none";
-    scoreElement.innerHTML = '0000';
-});
 
 /*
  * Gems that are laid out on stone blocks for player to pick up.
@@ -303,57 +282,18 @@ Gem.prototype.reset = function(newX, newY) {
 };
 
 var scoreElement = document.getElementById('score');
-
 Gem.prototype.update = function() {
     if (this.x == player.x && this.y == player.y) {
-        if (this.name == 'heart') {
-            allLives.push(new Live(101 * allLives.length, 508));
-        } else {
-            scoreElement.innerHTML = parseInt(scoreElement.innerHTML) + 50;
-            var index = allGems.indexOf(this);
-            allGems.splice(index, 1);   
-        }
+        scoreElement.innerHTML = parseInt(scoreElement.innerHTML) + 50;
+        
+        var index = allGems.indexOf(this);
+        allGems.splice(index, 1);
     }
 };
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-// Reset three gems' positions
-// Why not put this into a prototype function?
-// Each gem's position is unique, so that there needs to be codes
-// to record which position has been taken by a gem.
-// Prototype functions only works on each gem, can't overview the bigger picture.
-function resetGems() {
-    allGems = [];
-    allGems.push(gem2, gem3);
-
-    // Possible horizontal positions for a gem
-    var positionX = [0, 101, 202, 303, 404];
-    // Possible vertical position for a gem
-    var positionY = [83, 166, 249];
-    
-    var pickedPositionX = [];
-    var pickedPositionY = [];
-
-    var updatedGems = 0;
-    while(updatedGems < 2) {
-        // Randomly pick an x from positionX array
-        var newX = positionX[Math.floor(Math.random() * positionX.length)];
-        // Randomly pick an y from positionY array
-        var newY = positionY[Math.floor(Math.random() * positionY.length)];
-        
-        if ((!pickedPositionX.includes(newX)) && (!pickedPositionY.includes(newY))) {
-            allGems[updatedGems].reset(newX, newY);
-
-            pickedPositionX.push(newX);
-            pickedPositionY.push(newY);
-
-            updatedGems ++;
-        }
-    }
-}
 
 // Now instantiate your objects.
 var enemy1 = new Enemy(0, 62, 1);
@@ -380,8 +320,65 @@ var life5 = new Life(404, 508);
 // Place all lives in an array called allLives
 var allLives = [life1, life2, life3, life4, life5];
 
-//var gem1 = new Gem('images/Gem Blue.png', 101, 83);
-var gem2 = new Gem('images/Gem Green.png', 'green', 0, 249);
-var gem3 = new Gem('images/Gem Orange.png', 'orange', 101, 83);
-//var gem4 = new Gem('images/Heart.png', 'heart', 404, 83);
-var allGems = [/*gem1,*/ gem2, gem3, /*gem4*/];
+// Instantiate two gems
+var gem1 = new Gem('images/Gem Green.png', 'green', 0, 249);
+var gem2 = new Gem('images/Gem Orange.png', 'orange', 101, 83);
+
+// Place two gems in an array allGems
+var allGems = [gem1, gem2];
+
+// Reset three gems' positions
+// Why not put this into a prototype function?
+// Each gem's position is unique, so that there needs to be codes
+// to monitor which position has been taken by a gem.
+// Prototype functions only works on each gem, can't monitor the bigger picture.
+function resetGems() {
+    allGems = [];
+    allGems.push(gem1, gem2);
+
+    // Possible horizontal positions for a gem
+    var positionX = [0, 101, 202, 303, 404];
+    // Possible vertical position for a gem
+    var positionY = [83, 166, 249];
+    
+    var pickedPositionX = [];
+    var pickedPositionY = [];
+
+    var updatedGems = 0;
+    while(updatedGems < 2) {
+        // Randomly pick an x from positionX array
+        var newX = positionX[Math.floor(Math.random() * positionX.length)];
+        // Randomly pick an y from positionY array
+        var newY = positionY[Math.floor(Math.random() * positionY.length)];
+        
+        // Check if newX and newY are already picked
+        if ((!pickedPositionX.includes(newX)) && (!pickedPositionY.includes(newY))) {
+            allGems[updatedGems].reset(newX, newY);
+
+            pickedPositionX.push(newX);
+            pickedPositionY.push(newY);
+
+            updatedGems ++;
+        }
+    }
+}
+
+/*
+ * Popup modal will show when the game is over.
+ */
+var modal = document.getElementsByClassName('modal')[0];
+var closeButton = document.getElementsByClassName("close")[0];
+var finalScore = document.getElementById('modal-final-score');
+
+function showGameOverModal() {
+    if (allLives.length == 0) {
+        finalScore.innerHTML = scoreElement.innerHTML;
+        modal.style.display = "block";
+        allLives.push(life1, life2, life3, life4, life5);
+    }
+}
+
+closeButton.addEventListener("click", function() {
+    modal.style.display = "none";
+    scoreElement.innerHTML = '0000';
+});
